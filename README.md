@@ -3,7 +3,7 @@
 ## Features
 1. List all APIs divided into sections by categories
 2. Get a random API
-3. Filter APIs by categorias 
+3. Filter APIs by category 
 4. Filter APIs by auth type (no auth/apiKey/OAuth)
 5. Search through APIs by keyword (name & description)
 ### This app was done during the [Kottans frontend course](https://kottans.org)
