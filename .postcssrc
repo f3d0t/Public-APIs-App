@@ -3,9 +3,6 @@
   "plugins": {
     "autoprefixer": {
       "grid": true
-    },
-    "postcss-modules": {
-      "generateScopedName": "_[hash:base64:5]",
-    },
+    }
   }
 }
