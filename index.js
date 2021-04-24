@@ -1,4 +1,4 @@
-import { weatherByCity } from './fixtures';
+import { apiArray } from './fixtures';
 import {
   CELSIUS_UNITS,
   displayInUnits,
@@ -6,6 +6,7 @@ import {
   getDateFromUnixTimestamp,
   getIconFromCode,
 } from './utils';
+import styles from './style.css';
 
 if (module.hot) {
   module.hot.accept();
@@ -32,14 +33,44 @@ function renderApp() {
 }
 
 function App() {
-  return `<div>
- ${SearchByCity()}
+  return `<div class="${styles.container}">
+  ${getMenu()}
+  ${getApis()}
+  </div>`;
+  /*return `<div>
+ ${SearchByCity()}asdasdasd
  ${UnitSwitch(window.dataStore.currentUnits, setCurrentUnits)}
  <br/> 
  ${WeatherToday()}
  <br/>
  ${WeatherForecast()}
-</div>`;
+</div>`*/
+}
+
+function getApis() {
+  return apiArray.entries
+    .map(
+      api => `<div class="${styles.card}">
+        <a href="${api.Link}" target="_blank">
+          <h3 class="card__name">${api.API}</h3>
+        </a>
+        <p class="card__name">${api.Description}</p>
+        <p class="card__name">${api.Auth === '' ? 'none' : api.Auth}</p>
+        <p class="card__name">${api.HTTPS}</p>
+        <p class="card__name">${api.Cors}</p>
+        <p class="card__name">Category: ${api.Category}</p>
+      </div>`,
+    )
+    .join('');
+}
+
+function getMenu() {
+  return getCategoriesFilter();
+}
+
+function getCategoriesFilter() {
+  let categories = apiArray.entries.map(apiDataObject => apiDataObject.Category);
+  return [...new Set(categories)];
 }
 
 function UnitSwitch(currentUnits, setCurrentUnitsCB) {
