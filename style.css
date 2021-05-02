@@ -1,7 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400&display=swap');
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
 .container {
+  padding: 64px 24px 0px;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  height: 64px;
+  border-bottom: 1px solid #dadce0;
+}
+
+.apis_category {
   display: flex;
   flex-wrap: wrap;
 }
-.card {
-  flex: 0 0 33.333333%;
+.apis_category__name {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  padding: 16px 28px 8px;
+  flex-basis: 100%;
+}
+
+.api {
+  flex-basis: calc(100% / 3 - 24px);
+  border-radius: 8px;
+  border: 1px solid #dadce0;
+  margin: 12px;
+  transition: all 0.18s ease;
+}
+.api:hover {
+  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+  transform: translateY(-1px);
+}
+.api__link {
+  display: block;
+  padding: 16px 16px 12px;
+  text-decoration: none;
+}
+.api__name {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #202124;
+}
+.api__name:hover {
+  text-decoration: underline;
+}
+.api__features {
+  padding: 0 16px 8px;
+  display: grid;
+  grid-template-columns: 36px repeat(2, auto);
+  grid-template-rows: auto;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  font-weight: 400;
+}
+.api__auth_icon {
+  width: 24px;
+  height: 24px;
+  transform: translateY(-3px);
+}
+.api__https {
+  color: #ca2f2f;
+}
+.api__https[data-https='true'] {
+  color: #0fa22f;
+}
+.api__description {
+  padding: 0 16px 14px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 40;
 }

@@ -7,15 +7,11 @@ import {
   getIconFromCode,
 } from './utils';
 import styles from './style.css';
+import { icons } from './icons';
 
 if (module.hot) {
   module.hot.accept();
 }
-
-window.dataStore = {
-  currentCity: '',
-  currentUnits: CELSIUS_UNITS,
-};
 
 window.renderApp = renderApp;
 
@@ -34,6 +30,7 @@ function renderApp() {
 
 function App() {
   return `<div class="${styles.container}">
+  ${getHeader()}
   ${getMenu()}
   ${getApis()}
   </div>`;
@@ -48,20 +45,41 @@ function App() {
 }
 
 function getApis() {
-  return apiArray.entries
-    .map(
-      api => `<div class="${styles.card}">
-        <a href="${api.Link}" target="_blank">
-          <h3 class="card__name">${api.API}</h3>
-        </a>
-        <p class="card__name">${api.Description}</p>
-        <p class="card__name">${api.Auth === '' ? 'none' : api.Auth}</p>
-        <p class="card__name">${api.HTTPS}</p>
-        <p class="card__name">${api.Cors}</p>
-        <p class="card__name">Category: ${api.Category}</p>
-      </div>`,
-    )
-    .join('');
+  return window.dataStore.categories.forEach(category => {
+    list += `<div class="${styles.apis_category}">
+    <h2 class="${styles.apis_category__name}">${category}</h2>
+    `.concat(
+      apiArray.entries
+        .filter(api => api.Category === category)
+        .map(
+          api => `<div class="${styles.api}">
+          <a href="${api.Link}" target="_blank" class="${styles.api__link}">
+            <h3 class="${styles.api__name}">${api.API}</h3>
+          </a>
+          <div class="${styles.api__features}">
+            <img src='${icons.auth[api.Auth === '' ? 'none' : api.Auth]}' class="${
+            styles.api__auth_icon
+          }" title="auth: ${api.Auth === '' ? 'none' : api.Auth}" alt="auth: ${
+            api.Auth === '' ? 'none' : api.Auth
+          }">
+            <span title="HTTPS: ${api.HTTPS}" data-https="${api.HTTPS ? 'true' : 'false'}" class=${
+            styles.api__https
+          }>${api.HTTPS ? 'HTTPS://' : 'HTTP://'}</span>
+            <span title="CORS: ${api.Cors}">CORS: ${api.Cors === 'unknown' ? '??' : api.Cors}</span>
+          </div>
+          <p class="${styles.api__description}">${api.Description}</p>
+        </div>`,
+        )
+        .join('')
+        .concat('</div>'),
+    );
+  });
+}
+
+function getHeader() {
+  return `<header class="${header}">
+    <h1></h1>
+  </header>`;
 }
 
 function getMenu() {
@@ -69,8 +87,8 @@ function getMenu() {
 }
 
 function getCategoriesFilter() {
-  let categories = apiArray.entries.map(apiDataObject => apiDataObject.Category);
-  return [...new Set(categories)];
+  let categories = [...new Set(apiArray.entries.map(apiDataObject => apiDataObject.Category))];
+  window.dataStore.categories = categories;
 }
 
 function UnitSwitch(currentUnits, setCurrentUnitsCB) {
