@@ -1,11 +1,4 @@
 import { apiArray } from './fixtures';
-import {
-  CELSIUS_UNITS,
-  displayInUnits,
-  FAHRENHEIT_UNITS,
-  getDateFromUnixTimestamp,
-  getIconFromCode,
-} from './utils';
 import styles from './style.css';
 import { icons } from './icons';
 
@@ -14,162 +7,153 @@ if (module.hot) {
 }
 
 window.renderApp = renderApp;
-
-const setCurrentUnits = function (value) {
-  window.dataStore.currentUnits = value;
-  window.renderApp();
+window.dataStore = {
+  fullApiArray: apiArray.entries,
+  currentApiArray: apiArray.entries,
+  categories: [],
+  filters: {
+    Category: '',
+    Cors: '',
+    HTTPS: '',
+  },
+  currentCategoryList: [],
+  displayFavorites: false,
+  appIsLoading: false,
 };
 
-renderApp();
+function getCategories() {
+  window.dataStore.categories = [
+    ...new Set(apiArray.entries.map(apiDataObject => apiDataObject.Category)),
+  ];
+  window.dataStore.currentCategoryList = [
+    ...new Set(apiArray.entries.map(apiDataObject => apiDataObject.Category)),
+  ];
+}
+
+function setFilter(key, value) {
+  window.dataStore.filters[key] = value;
+  filterApiArray();
+}
+window.setFilter = setFilter;
+window.filterApiArray = filterApiArray;
+function filterApiArray() {
+  let { filters, fullApiArray: apiArray } = window.dataStore;
+  Object.entries(filters).map(([key, value]) => {
+    if (value !== '' && value !== false) {
+      apiArray = apiArray.filter(api => api[key] == value);
+    }
+  });
+  window.dataStore.currentApiArray = apiArray;
+}
+
+function setCategoryFilter(category) {
+  if (category === 'All' || category === '') {
+    setFilter('Category', '');
+  } else {
+    setFilter('Category', category);
+  }
+  renderApp();
+}
+
+function App() {
+  return `<div class="${styles.container}">
+  ${Header()}
+  ${Menu()}
+  ${Apis()}
+  </div>`;
+}
+function Header() {
+  return `<header class="${styles.header}">
+    <h1 class="${styles.header__title}">🔌 Public APIs app</h1>
+  </header>`;
+}
+function Menu() {
+  return `<div class="${styles.menu}">
+  <div>${CategoryFilter(setCategoryFilter)}</div>
+  <form action="" class="search-form" role="search"></form>
+</div>`;
+}
 
 function renderApp() {
+  //console.log('render');
   document.getElementById('app-root').innerHTML = `
         ${App()}
     `;
 }
 
-function App() {
-  return `<div class="${styles.container}">
-  ${getHeader()}
-  ${getMenu()}
-  ${getApis()}
-  </div>`;
-  /*return `<div>
- ${SearchByCity()}asdasdasd
- ${UnitSwitch(window.dataStore.currentUnits, setCurrentUnits)}
- <br/> 
- ${WeatherToday()}
- <br/>
- ${WeatherForecast()}
-</div>`*/
-}
-
-function getApis() {
-  return window.dataStore.categories.forEach(category => {
-    list += `<div class="${styles.apis_category}">
+function Apis() {
+  let {
+    currentCategoryList,
+    currentApiArray,
+    filters: { Category: currentCategory },
+  } = window.dataStore;
+  if (currentCategory !== '') {
+    currentCategoryList = [currentCategory];
+  }
+  return currentCategoryList
+    .map(category => {
+      let apisByCategory = currentApiArray.filter(api => api.Category === category);
+      return apisByCategory.length === 0
+        ? ``
+        : `<div class="${styles.apis_category}">
     <h2 class="${styles.apis_category__name}">${category}</h2>
     `.concat(
-      apiArray.entries
-        .filter(api => api.Category === category)
-        .map(
-          api => `<div class="${styles.api}">
-          <a href="${api.Link}" target="_blank" class="${styles.api__link}">
-            <h3 class="${styles.api__name}">${api.API}</h3>
-          </a>
-          <div class="${styles.api__features}">
-            <img src='${icons.auth[api.Auth === '' ? 'none' : api.Auth]}' class="${
-            styles.api__auth_icon
-          }" title="auth: ${api.Auth === '' ? 'none' : api.Auth}" alt="auth: ${
-            api.Auth === '' ? 'none' : api.Auth
-          }">
-            <span title="HTTPS: ${api.HTTPS}" data-https="${api.HTTPS ? 'true' : 'false'}" class=${
-            styles.api__https
-          }>${api.HTTPS ? 'HTTPS://' : 'HTTP://'}</span>
-            <span title="CORS: ${api.Cors}">CORS: ${api.Cors === 'unknown' ? '??' : api.Cors}</span>
-          </div>
-          <p class="${styles.api__description}">${api.Description}</p>
-        </div>`,
-        )
-        .join('')
-        .concat('</div>'),
-    );
-  });
+            apisByCategory
+              .map(({ API, Auth, Cors, Description, HTTPS, Link }) =>
+                ApiItem(API, Auth, Cors, Description, HTTPS, Link),
+              )
+              .join('')
+              .concat('</div>'),
+          );
+    })
+    .join('');
 }
 
-function getHeader() {
-  return `<header class="${header}">
-    <h1></h1>
-  </header>`;
+function ApiItem(api, auth, cors, description, https, link) {
+  return `<a href="${link}" target="_blank" class="${styles.api}">
+            <h3 class="${styles.api__name}">${api}</h3>
+            <div class="${styles.heart_container}">
+              <div class="${styles.heart + ' ' + styles.heart__l}"></div>
+              <div class="${styles.heart + ' ' + styles.heart__r}"></div>
+            </div>
+            <div class="${styles.api__features}">
+              <img src='${icons.auth[auth === '' ? 'none' : auth]}' 
+              class="${styles.api__auth_icon}" 
+              title="auth: ${auth === '' ? 'none' : auth}" 
+              alt="auth: ${auth === '' ? 'none' : auth}">
+              <span title="HTTPS: ${https}" 
+              data-https="${https ? 'true' : 'false'}" 
+              class=${styles.api__https}>
+               ${https ? 'HTTPS://' : 'HTTP://'}
+              </span>
+              <span title="CORS: ${cors}">CORS: ${cors === 'unknown' ? '??' : cors}</span>
+            </div>
+            <p class="${styles.api__description}">${description}</p>
+          </a>`;
 }
 
-function getMenu() {
-  return getCategoriesFilter();
-}
-
-function getCategoriesFilter() {
-  let categories = [...new Set(apiArray.entries.map(apiDataObject => apiDataObject.Category))];
-  window.dataStore.categories = categories;
-}
-
-function UnitSwitch(currentUnits, setCurrentUnitsCB) {
-  return `
-    <p>Select units</p>
-  ${[
-    { id: 'celsius-units', value: CELSIUS_UNITS, name: 'C' },
-    { id: 'fahrenheit-units', value: FAHRENHEIT_UNITS, name: 'F' },
-  ]
-    .map(
-      ({ id, value, name }) =>
-        `<div>
-          <input 
-              type="radio" 
-              id="${id}"
-              name="temperature-units" 
-              value="${value}" 
-              ${currentUnits === value ? ' checked ' : ''} 
-              onchange="(${setCurrentUnitsCB})(this.value);"
-          >
-            <label for="${id}">˚${name}</label>
-        </div>`,
-    )
-    .join('')}
+function CategoryFilter(setCategoryFilterCB) {
+  let {
+    categories,
+    filters: { Category: currentCategory },
+  } = window.dataStore;
+  //console.log(currentCategory);
+  return ` 
+  <label for="cat-select">Category:</label>
+  <select name="pets" id="cat-select" class="${styles.category_select}"
+    onchange="(${setCategoryFilterCB})(this.value)";
+  >
+    <option value='All'>All</option>
+    ${categories.map(
+      cat => `<option 
+        value="${cat}"
+        ${currentCategory === cat ? ' selected ' : ''}
+      >${cat}</option>
+    `,
+    )}
+  </select>
 `;
 }
 
-function SearchByCity() {
-  const weatherData = weatherByCity[window.dataStore.currentCity];
-
-  return `
-    <input
-        type="text"
-        value="${window.dataStore.currentCity}"
-        onchange="window.dataStore.currentCity = this.value; window.renderApp();" 
-    />
-    ${!weatherData ? `Enter one of the city names: ${Object.keys(weatherByCity).join(', ')}.` : ''}
-`;
-}
-
-function WeatherToday() {
-  const { currentCity, currentUnits } = window.dataStore;
-  const weatherData = weatherByCity[currentCity];
-  let content = '';
-
-  if (weatherData) {
-    const {
-      current: {
-        dt,
-        temp,
-        weather: [{ main, description, icon }],
-      },
-    } = weatherData;
-    const tempInUnits = displayInUnits(temp, currentUnits);
-    const dateString = getDateFromUnixTimestamp(dt);
-    const weatherIcon = getIconFromCode(icon);
-    content += `<div>Weather for ${dateString} in ${currentCity}:</div>`;
-    content += `<div>${weatherIcon} ${main} (${description}). Temperature is ${tempInUnits}</div>`;
-  }
-
-  return content ? `<div>${content}</div>` : '';
-}
-
-function WeatherForecast() {
-  const { currentCity, currentUnits } = window.dataStore;
-  const weatherData = weatherByCity[currentCity];
-  let content = '';
-  if (weatherData) {
-    content += `Weather forecast for ${currentCity}:`;
-    const { daily } = weatherData;
-    content += daily
-      .slice(1)
-      .map(({ dt, temp: { day, night }, weather: [{ main, description, icon }] }) => {
-        const dateString = getDateFromUnixTimestamp(dt);
-        const dayTempInUnits = displayInUnits(day, currentUnits);
-        const nightTempInUnits = displayInUnits(night, currentUnits);
-        const weatherIcon = getIconFromCode(icon);
-        return `<div>For ${dateString}, ${weatherIcon} ${main} (${description}). Day at ${dayTempInUnits}, night at ${nightTempInUnits}</div>`;
-      })
-      .join('');
-  }
-
-  return content ? `<div>${content}</div>` : '';
-}
+getCategories();
+renderApp();

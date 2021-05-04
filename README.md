@@ -1,4 +1,4 @@
-# Public-APIs-App
+# public-APIs-app
 
 ### This application allows you to view list of public APIs, filter and search through them using [Public API for Public APIs](https://github.com/davemachado/public-api).
 
