@@ -10,29 +10,41 @@ window.renderApp = renderApp;
 window.dataStore = {
   fullApiArray: apiArray.entries,
   currentApiArray: apiArray.entries,
-  categories: [],
+  filterArrays: {
+    categories: [],
+    cors: [],
+    https: [],
+  },
   filters: {
     Category: '',
     Cors: '',
     HTTPS: '',
   },
-  currentCategoryList: [],
   displayFavorites: false,
   appIsLoading: false,
 };
 
 function getCategories() {
-  window.dataStore.categories = [
-    ...new Set(apiArray.entries.map(apiDataObject => apiDataObject.Category)),
-  ];
-  window.dataStore.currentCategoryList = [
+  window.dataStore.filterArrays.categories = [
     ...new Set(apiArray.entries.map(apiDataObject => apiDataObject.Category)),
   ];
 }
 
+function loadData() {
+  const url = `http://api.publicapis.org/entries/`;
+  return fetch(url)
+    .then(response => response.json())
+    .then(data => ({ data }));
+}
+
+window.loadData = loadData;
+
 function setFilter(key, value) {
   window.dataStore.filters[key] = value;
   filterApiArray();
+}
+function removeFilter(key) {
+  delete window.dataStore.filters[key];
 }
 window.setFilter = setFilter;
 window.filterApiArray = filterApiArray;
@@ -82,17 +94,20 @@ function renderApp() {
 }
 
 function Apis() {
-  let {
-    currentCategoryList,
+  const {
+    filterArrays: { categories },
     currentApiArray,
     filters: { Category: currentCategory },
   } = window.dataStore;
+  const currentCategoryList = categories.slice();
   if (currentCategory !== '') {
-    currentCategoryList = [currentCategory];
+    currentCategoryList.splice(0, currentCategoryList.length, currentCategory);
   }
   return currentCategoryList
     .map(category => {
-      let apisByCategory = currentApiArray.filter(api => api.Category === category);
+      const apisByCategory = currentApiArray.filter(api => {
+        return api.Category === category;
+      });
       return apisByCategory.length === 0
         ? ``
         : `<div class="${styles.apis_category}">
@@ -102,12 +117,14 @@ function Apis() {
               .map(({ API, Auth, Cors, Description, HTTPS, Link }) =>
                 ApiItem(API, Auth, Cors, Description, HTTPS, Link),
               )
-              .join('')
-              .concat('</div>'),
+              .join(''),
+            `</div>`,
           );
     })
     .join('');
 }
+
+function Category() {}
 
 function ApiItem(api, auth, cors, description, https, link) {
   return `<a href="${link}" target="_blank" class="${styles.api}">
@@ -134,7 +151,7 @@ function ApiItem(api, auth, cors, description, https, link) {
 
 function CategoryFilter(setCategoryFilterCB) {
   let {
-    categories,
+    filterArrays: { categories },
     filters: { Category: currentCategory },
   } = window.dataStore;
   //console.log(currentCategory);
