@@ -31,7 +31,7 @@ function getCategories() {
 }
 
 function loadData() {
-  const url = `http://api.publicapis.org/entries/`;
+  const url = `https://api.publicapis.org/entries/`;
   return fetch(url)
     .then(response => response.json())
     .then(data => ({ data }));
