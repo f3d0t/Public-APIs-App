@@ -1,1 +1,0 @@
-{"version":3,"sources":["style.css"],"names":[],"mappings":"AAAA,kBACE,YAAa,CACb,cACF,CACA,aACE,mBACF","file":"public-apis-app.24fec1c5.css","sourceRoot":"..","sourcesContent":[".container {\n  display: flex;\n  flex-wrap: wrap;\n}\n.card {\n  flex: 0 0 33.333333%;\n}\n"]}
