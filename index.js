@@ -37,11 +37,11 @@ function checkBooleanAndConvert(value) {
 
 function initApp() {
   window.renderApp();
-  window.prepareData(renderApp);
+  window.prepareData(window.renderApp);
 }
 function reloadApp() {
   window.clearFilters();
-  window.prepareData(renderApp);
+  window.prepareData(window.renderApp);
 }
 
 function getFilterValues(data, key) {
