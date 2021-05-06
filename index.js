@@ -27,6 +27,7 @@ window.checkBooleanAndConvert = checkBooleanAndConvert;
 window.filterApiArray = filterApiArray;
 window.prepareData = prepareData;
 window.clearFilters = clearFilters;
+window.loadData = loadData;
 
 function checkBooleanAndConvert(value) {
   if (value === 'true') return true;
@@ -35,12 +36,12 @@ function checkBooleanAndConvert(value) {
 }
 
 function initApp() {
-  renderApp();
-  prepareData(renderApp);
+  window.renderApp();
+  window.prepareData(renderApp);
 }
 function reloadApp() {
-  clearFilters();
-  prepareData(renderApp);
+  window.clearFilters();
+  window.prepareData(renderApp);
 }
 
 function getFilterValues(data, key) {
@@ -72,7 +73,7 @@ function loadData() {
 
 function prepareData(renderCB) {
   const { filterArrays } = window.dataStore;
-  loadData().then(data => {
+  window.loadData().then(data => {
     if (data !== {}) {
       window.dataStore.fullApiArray = data.map(function (api) {
         api.HTML = ApiItem(api);
