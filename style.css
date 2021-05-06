@@ -20,6 +20,7 @@
   height: 64px;
   border-bottom: 1px solid #dadce0;
   padding: 0 36px;
+  color: #202124;
 }
 .header__title {
   position: relative;
@@ -37,13 +38,28 @@
   height: 64px;
   padding: 0 0 0 52px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
   border-bottom: 1px solid #dadce0;
+  color: #202124;
 }
-.category_select {
+.menu_filter {
+  margin-right: 16px;
+}
+.filter_select {
   font-family: 'Source Code Pro', monospace;
-  margin-left: 8px;
+}
+.menu_button {
+  margin-right: 16px;
+  background: #fff;
+  color: #202124;
+  font-family: 'Source Code Pro', monospace;
+}
+.menu_button:hover {
+  text-decoration: dashed underline 1px;
+  cursor: pointer;
 }
 
 .apis_category {

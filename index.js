@@ -1,4 +1,3 @@
-import { apiArray } from './fixtures';
 import styles from './style.css';
 import { icons } from './icons';
 
@@ -6,72 +5,129 @@ if (module.hot) {
   module.hot.accept();
 }
 
-window.renderApp = renderApp;
 window.dataStore = {
-  fullApiArray: apiArray.entries,
-  currentApiArray: apiArray.entries,
+  fullApiArray: [],
+  currentApiArray: [],
   filterArrays: {
-    categories: [],
-    cors: [],
-    https: [],
+    Category: [],
+    Cors: [],
+    HTTPS: [],
   },
   filters: {
     Category: '',
     Cors: '',
     HTTPS: '',
   },
+  error: null,
   displayFavorites: false,
-  appIsLoading: false,
+  isDataLoading: false,
 };
+window.renderApp = renderApp;
+window.checkBooleanAndConvert = checkBooleanAndConvert;
+window.filterApiArray = filterApiArray;
+window.prepareData = prepareData;
+window.clearFilters = clearFilters;
 
-function getCategories() {
-  window.dataStore.filterArrays.categories = [
-    ...new Set(apiArray.entries.map(apiDataObject => apiDataObject.Category)),
-  ];
+function checkBooleanAndConvert(value) {
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  return value;
+}
+
+function initApp() {
+  renderApp();
+  prepareData(renderApp);
+}
+function reloadApp() {
+  clearFilters();
+  prepareData(renderApp);
+}
+
+function getFilterValues(data, key) {
+  return [...new Set(data.map(api => api[key]))];
+}
+
+function renderApp() {
+  document.getElementById('app-root').innerHTML = `
+        ${App()}
+    `;
 }
 
 function loadData() {
-  const url = `https://api.publicapis.org/entries/`;
+  window.dataStore.isDataLoading = true;
+  window.dataStore.error = null;
+  const url = `https://api.publicapis.org/entries`;
   return fetch(url)
     .then(response => response.json())
-    .then(data => ({ data }));
+    .then(data => {
+      if (data) {
+        return data.entries;
+      }
+    })
+    .catch(error => {
+      window.dataStore.error = error;
+      return Promise.resolve({});
+    });
 }
 
-window.loadData = loadData;
+function prepareData(renderCB) {
+  const { filterArrays } = window.dataStore;
+  loadData().then(data => {
+    if (data !== {}) {
+      window.dataStore.fullApiArray = data.map(function (api) {
+        api.HTML = ApiItem(api);
+        return api;
+      });
+      window.dataStore.currentApiArray = window.dataStore.fullApiArray;
+      window.dataStore.isDataLoading = false;
+      Object.keys(filterArrays).map(key => {
+        filterArrays[key] = getFilterValues(data, key);
+      });
+    }
+    renderCB();
+  });
+}
 
-function setFilter(key, value) {
-  window.dataStore.filters[key] = value;
-  filterApiArray();
-}
-function removeFilter(key) {
-  delete window.dataStore.filters[key];
-}
-window.setFilter = setFilter;
-window.filterApiArray = filterApiArray;
 function filterApiArray() {
-  let { filters, fullApiArray: apiArray } = window.dataStore;
+  const { filters } = window.dataStore;
+  let apiArray = window.dataStore.fullApiArray.slice();
   Object.entries(filters).map(([key, value]) => {
-    if (value !== '' && value !== false) {
-      apiArray = apiArray.filter(api => api[key] == value);
+    if (value !== '') {
+      apiArray = apiArray.filter(api => api[key] === value);
     }
   });
   window.dataStore.currentApiArray = apiArray;
 }
 
-function setCategoryFilter(category) {
-  if (category === 'All' || category === '') {
-    setFilter('Category', '');
+function setFilter(key, value) {
+  if (value === 'All' || value === '') {
+    window.dataStore.filters[key] = '';
   } else {
-    setFilter('Category', category);
+    window.dataStore.filters[key] = checkBooleanAndConvert(value);
   }
-  renderApp();
+  window.filterApiArray();
+  window.renderApp();
+}
+function setRandom() {
+  window.clearFilters(false);
+  const apiArray = window.dataStore.currentApiArray.slice();
+  window.dataStore.currentApiArray = [apiArray[Math.floor(Math.random() * apiArray.length)]];
+  window.renderApp();
+}
+function clearFilters(render = true) {
+  let { filters, fullApiArray: apiArray } = window.dataStore;
+  Object.keys(filters).map(key => {
+    window.dataStore.filters[key] = '';
+  });
+  window.dataStore.currentApiArray = apiArray;
+  if (render) window.renderApp();
 }
 
 function App() {
   return `<div class="${styles.container}">
   ${Header()}
   ${Menu()}
-  ${Apis()}
+  ${Content()}
   </div>`;
 }
 function Header() {
@@ -81,96 +137,93 @@ function Header() {
 }
 function Menu() {
   return `<div class="${styles.menu}">
-  <div>${CategoryFilter(setCategoryFilter)}</div>
-  <form action="" class="search-form" role="search"></form>
+  ${Filters(setFilter)}
+  ${Button('Get random', setRandom)}
+  ${Button('Clear filters', clearFilters)}
+  ${Button('Reload data', reloadApp)}
 </div>`;
 }
+function Filters(setFilterCB) {
+  const { filterArrays, filters } = window.dataStore;
+  return Object.entries(filters)
+    .map(([key, value]) => {
+      return `<div class=${styles.menu_filter}>
+      <label for="${key}_select">${key}:</label>
+      <select name="${key}" id="${key}_select" class="${styles.filter_select}"
+        onchange="(${setFilterCB})('${key}', this.value)"
+      >
+        <option value='All'>All</option>
+        ${filterArrays[key]
+          .map(
+            cat => `<option 
+            value="${cat}"
+            ${value === cat ? ' selected ' : ''}
+          >${cat}</option>
+        `,
+          )
+          .join('')}
+      </select>
+        </div>`;
+    })
+    .join('');
+}
+function Button(text = 'undefined', callbackFn) {
+  return `<button type="button" class="${styles.menu_button}" onclick="(${callbackFn})()">${text}</button>`;
+}
 
-function renderApp() {
-  //console.log('render');
-  document.getElementById('app-root').innerHTML = `
-        ${App()}
-    `;
+function Content() {
+  if (window.dataStore.error !== null) {
+    return `<p>${window.dataStore.error}</p>`;
+  } else if (window.dataStore.isDataLoading) {
+    return `<p class="${styles.loading}">Data is loading</p>`;
+  } else if (window.dataStore.currentApiArray === []) {
+    window.prepareData();
+  }
+  return `${Apis()}`;
 }
 
 function Apis() {
   const {
-    filterArrays: { categories },
+    filterArrays: { Category },
     currentApiArray,
     filters: { Category: currentCategory },
   } = window.dataStore;
-  const currentCategoryList = categories.slice();
+  const currentCategoryList = Category.slice();
   if (currentCategory !== '') {
     currentCategoryList.splice(0, currentCategoryList.length, currentCategory);
   }
   return currentCategoryList
     .map(category => {
-      const apisByCategory = currentApiArray.filter(api => {
-        return api.Category === category;
-      });
+      const apisByCategory = currentApiArray.filter(api => api.Category === category);
       return apisByCategory.length === 0
         ? ``
         : `<div class="${styles.apis_category}">
     <h2 class="${styles.apis_category__name}">${category}</h2>
-    `.concat(
-            apisByCategory
-              .map(({ API, Auth, Cors, Description, HTTPS, Link }) =>
-                ApiItem(API, Auth, Cors, Description, HTTPS, Link),
-              )
-              .join(''),
-            `</div>`,
-          );
+    `.concat(apisByCategory.map(api => api.HTML).join(''), `</div>`);
     })
     .join('');
 }
-
-function Category() {}
-
-function ApiItem(api, auth, cors, description, https, link) {
-  return `<a href="${link}" target="_blank" class="${styles.api}">
-            <h3 class="${styles.api__name}">${api}</h3>
+function ApiItem({ API, Auth, Cors, Description, HTTPS, Link }) {
+  return `<a href="${Link}" target="_blank" class="${styles.api}">
+            <h3 class="${styles.api__name}">${API}</h3>
             <div class="${styles.heart_container}">
               <div class="${styles.heart + ' ' + styles.heart__l}"></div>
               <div class="${styles.heart + ' ' + styles.heart__r}"></div>
             </div>
             <div class="${styles.api__features}">
-              <img src='${icons.auth[auth === '' ? 'none' : auth]}' 
+              <img src='${icons.auth[Auth === '' ? 'none' : Auth]}' 
               class="${styles.api__auth_icon}" 
-              title="auth: ${auth === '' ? 'none' : auth}" 
-              alt="auth: ${auth === '' ? 'none' : auth}">
-              <span title="HTTPS: ${https}" 
-              data-https="${https ? 'true' : 'false'}" 
+              title="auth: ${Auth === '' ? 'none' : Auth}" 
+              alt="auth: ${Auth === '' ? 'none' : Auth}">
+              <span title="HTTPS: ${HTTPS}" 
+              data-https="${HTTPS ? 'true' : 'false'}" 
               class=${styles.api__https}>
-               ${https ? 'HTTPS://' : 'HTTP://'}
+               ${HTTPS ? 'HTTPS://' : 'HTTP://'}
               </span>
-              <span title="CORS: ${cors}">CORS: ${cors === 'unknown' ? '??' : cors}</span>
+              <span title="CORS: ${Cors}">CORS: ${Cors === 'unknown' ? '??' : Cors}</span>
             </div>
-            <p class="${styles.api__description}">${description}</p>
+            <p class="${styles.api__description}">${Description}</p>
           </a>`;
 }
 
-function CategoryFilter(setCategoryFilterCB) {
-  let {
-    filterArrays: { categories },
-    filters: { Category: currentCategory },
-  } = window.dataStore;
-  //console.log(currentCategory);
-  return ` 
-  <label for="cat-select">Category:</label>
-  <select name="pets" id="cat-select" class="${styles.category_select}"
-    onchange="(${setCategoryFilterCB})(this.value)";
-  >
-    <option value='All'>All</option>
-    ${categories.map(
-      cat => `<option 
-        value="${cat}"
-        ${currentCategory === cat ? ' selected ' : ''}
-      >${cat}</option>
-    `,
-    )}
-  </select>
-`;
-}
-
-getCategories();
-renderApp();
+initApp();
