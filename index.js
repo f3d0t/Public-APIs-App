@@ -117,7 +117,7 @@ function setRandom() {
 function clearFilters(render = true) {
   let { filters, fullApiArray: apiArray } = window.dataStore;
   Object.keys(filters).map(key => {
-    window.dataStore.filters[key] = '';
+    window.dataStore.filters[key] = [].join();
   });
   window.dataStore.currentApiArray = apiArray;
   if (render) window.renderApp();
@@ -168,7 +168,7 @@ function Filters(setFilterCB) {
     .join('');
 }
 function Button(text = 'undefined', callbackFn) {
-  return `<button type="button" class="${styles.menu_button}" onclick="(${callbackFn})()">${text}</button>`;
+  return `<button type="button" class="${styles.menu_button}" onclick='(${callbackFn})()'>${text}</button>`;
 }
 
 function Content() {
