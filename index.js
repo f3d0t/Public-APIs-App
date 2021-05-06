@@ -156,10 +156,10 @@ function Filters(setFilterCB) {
         <option value='All'>All</option>
         ${filterArrays[key]
           .map(
-            cat => `<option 
-            value="${cat}"
-            ${value === cat ? ' selected ' : ''}
-          >${cat}</option>
+            val => `<option 
+            value="${val}"
+            ${value === val ? ' selected ' : ''}
+          >${val}</option>
         `,
           )
           .join('')}
