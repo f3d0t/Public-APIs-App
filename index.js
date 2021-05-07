@@ -28,6 +28,7 @@ window.filterApiArray = filterApiArray;
 window.prepareData = prepareData;
 window.clearFilters = clearFilters;
 window.loadData = loadData;
+window.setFilter = setFilter;
 
 function checkBooleanAndConvert(value) {
   if (value === 'true') return true;
@@ -118,7 +119,7 @@ function setRandom() {
 function clearFilters(render = true) {
   let { filters, fullApiArray: apiArray } = window.dataStore;
   Object.keys(filters).map(key => {
-    window.dataStore.filters[key] = [].join();
+    window.dataStore.filters[key] = '';
   });
   window.dataStore.currentApiArray = apiArray;
   if (render) window.renderApp();
@@ -144,14 +145,14 @@ function Menu() {
   ${Button('Reload data', reloadApp)}
 </div>`;
 }
-function Filters(setFilterCB) {
+function Filters() {
   const { filterArrays, filters } = window.dataStore;
   return Object.entries(filters)
     .map(([key, value]) => {
       return `<div class=${styles.menu_filter}>
       <label for="${key}_select">${key}:</label>
       <select name="${key}" id="${key}_select" class="${styles.filter_select}"
-        onchange="(${setFilterCB})('${key}', this.value)"
+        onchange="window.setFilter('${key}', this.value)"
       >
         <option value='All'>All</option>
         ${filterArrays[key]
@@ -168,8 +169,9 @@ function Filters(setFilterCB) {
     })
     .join('');
 }
-function Button(text = 'undefined', callbackFn) {
-  return `<button type="button" class="${styles.menu_button}" onclick='(${callbackFn})()'>${text}</button>`;
+
+function Button(text = 'uNdefined', callbackFn) {
+  return `<button type="button" class="${styles.menu_button}" onclick="(${callbackFn})()">${text}</button>`;
 }
 
 function Content() {
@@ -178,7 +180,6 @@ function Content() {
   } else if (window.dataStore.isDataLoading) {
     return `<p class="${styles.loading}">Data is loading</p>`;
   } else if (window.dataStore.currentApiArray === []) {
-    window.prepareData();
   }
   return `${Apis()}`;
 }
