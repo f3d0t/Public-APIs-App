@@ -8,7 +8,7 @@ export function Button(text = '', callbackFn) {
             onclick="window.dataStore.activeInputId = '${text.replace(
               /\s/g,
               '',
-            )}'; ${callbackFn}()">
+            )}'; (${callbackFn})()">
               ${text}
           </button>`;
 }

@@ -1,16 +1,12 @@
 .menu {
-  position: absolute;
-  top: 64px;
-  left: 0;
-  right: 0;
-  height: 64px;
+  min-height: 64px;
   padding: 0 0 0 52px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   font-family: 'Source Code Pro', monospace;
   font-size: 14px;
-  border-bottom: 1px solid #dadce0;
   color: #202124;
+  border-bottom: 1px solid #dadce0;
   user-select: none;
 }

@@ -59,14 +59,14 @@ export function setFilter(key, value, id) {
   window.renderApp();
 }
 
-function setRandom() {
+export function setRandom() {
   window.clearFilters(false);
   const apiArray = window.dataStore.currentApiArray.slice();
   window.dataStore.currentApiArray = [apiArray[Math.floor(Math.random() * apiArray.length)]];
   window.renderApp();
 }
 
-function clearFilters(render = true) {
+export function clearFilters(render = true) {
   let { filters } = window.dataStore;
   Object.keys(filters).map(key => {
     window.dataStore.filters[key] = '';
