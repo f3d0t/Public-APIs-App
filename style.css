@@ -6,7 +6,7 @@
 }
 
 .container {
-  padding: 128px 24px 0px;
+  padding: 128px 24px 24px;
 }
 
 .header {
@@ -44,6 +44,7 @@
   font-size: 14px;
   border-bottom: 1px solid #dadce0;
   color: #202124;
+  user-select: none;
 }
 .menu_filter {
   margin-right: 16px;
@@ -61,7 +62,18 @@
   text-decoration: dashed underline 1px;
   cursor: pointer;
 }
+.menu_button:focus {
+  text-decoration: dashed underline 1px;
+}
 
+.apis_counter {
+  display: block;
+  padding: 16px 28px 0px;
+  flex-basis: 100%;
+  font-family: 'Source Code Pro';
+  font-size: 14px;
+  color: #5f6368;
+}
 .apis_category {
   display: flex;
   flex-wrap: wrap;
@@ -163,6 +175,17 @@
 }
 .heart_container.active .heart {
   background: #cb3d3d;
+}
+
+.loading_text {
+  text-align: center;
+  padding-top: 14px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+}
+
+.loading_text__error {
+  color: #ca2f2f;
 }
 
 @media screen and (max-width: 911px) {
