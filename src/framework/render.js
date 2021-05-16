@@ -1,8 +1,14 @@
-import { App } from '../components/App/App';
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement } from './element';
+let Component, Target;
 
-export function renderApp() {
+export default function renderApp(componentFunction = null, targetElement = null) {
   let { activeInputId } = window.dataStore;
-  document.getElementById('app-root').innerHTML = `${App()}`;
+  if (componentFunction) Component = componentFunction;
+  if (targetElement) Target = targetElement;
+  Target.innerHTML = '';
+  Target.appendChild(<Component />);
   if (activeInputId !== '' && document.getElementById(activeInputId) !== null)
     document.getElementById(activeInputId).focus();
 }

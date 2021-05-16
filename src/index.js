@@ -28,5 +28,5 @@ window.clearFilters = clearFilters;
 window.reloadApp = reloadApp;
 window.setRandom = setRandom;
 window.getFilterValues = getFilterValues;
-
+renderApp();
 loadAndPrepareData();
