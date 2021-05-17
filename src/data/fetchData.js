@@ -1,6 +1,8 @@
+import { renderApp } from '../framework/render';
+
 export function fetchData() {
   window.dataStore.isDataLoading = true;
-  window.renderApp();
+  renderApp();
   window.dataStore.error = null;
   const url = `https://api.publicapis.org/entries`;
   return fetch(url)

@@ -1,4 +1,6 @@
-import { ApiHtml } from './apiHtml';
+import { ApiHtml } from './ApiHtml/ApiHtml';
+import { renderApp } from '../framework/render';
+import { fetchData } from './fetchData';
 
 export function checkBooleanAndConvert(value) {
   if (value === 'true') return true;
@@ -23,8 +25,7 @@ export function filterApiArray() {
 
 export function loadAndPrepareData() {
   const { filterArrays, filters } = window.dataStore;
-  window
-    .fetchData()
+  fetchData()
     .then(data => {
       if (Object.keys(data).length !== 0) {
         window.dataStore.fullApiArray = data.map(api => {
@@ -36,16 +37,16 @@ export function loadAndPrepareData() {
         window.dataStore.apiCount = window.dataStore.currentApiArray.length;
         window.dataStore.isDataLoading = false;
         Object.keys(filters).map(key => {
-          filterArrays[key] = window.getFilterValues(data, key);
+          filterArrays[key] = getFilterValues(data, key);
         });
       }
     })
-    .finally(window.renderApp);
+    .finally(renderApp);
 }
 
 export function reloadApp() {
-  window.clearFilters(false);
-  window.loadAndPrepareData();
+  clearFilters(false);
+  loadAndPrepareData();
 }
 
 export function setFilter(key, value, id) {
@@ -54,16 +55,16 @@ export function setFilter(key, value, id) {
   } else {
     window.dataStore.filters[key] = checkBooleanAndConvert(value);
   }
-  window.filterApiArray();
+  filterApiArray();
   window.dataStore.activeInputId = id;
-  window.renderApp();
+  renderApp();
 }
 
 export function setRandom() {
-  window.clearFilters(false);
+  clearFilters(false);
   const apiArray = window.dataStore.currentApiArray.slice();
   window.dataStore.currentApiArray = [apiArray[Math.floor(Math.random() * apiArray.length)]];
-  window.renderApp();
+  renderApp();
 }
 
 export function clearFilters(render = true) {
@@ -71,6 +72,6 @@ export function clearFilters(render = true) {
   Object.keys(filters).map(key => {
     window.dataStore.filters[key] = '';
   });
-  window.filterApiArray();
-  if (render) window.renderApp();
+  filterApiArray();
+  if (render) renderApp();
 }

@@ -4,15 +4,15 @@ export const dataStore = {
   apiCount: '',
   filterArrays: {
     Category: [],
-    Cors: [],
     HTTPS: [],
     Auth: [],
+    Cors: [],
   },
   filters: {
     Category: '',
-    Cors: '',
     HTTPS: '',
     Auth: '',
+    Cors: '',
   },
   activeInputId: '',
   error: null,

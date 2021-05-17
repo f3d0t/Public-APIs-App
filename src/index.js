@@ -1,6 +1,8 @@
 import { renderApp } from './framework/render.js';
 import { fetchData } from './data/fetchData.js';
 import { dataStore } from './data/dataStore';
+import { App } from './components/App/App';
+
 import {
   loadAndPrepareData,
   checkBooleanAndConvert,
@@ -18,15 +20,5 @@ if (module.hot) {
 
 window.dataStore = dataStore;
 
-window.renderApp = renderApp;
-window.fetchData = fetchData;
-window.loadAndPrepareData = loadAndPrepareData;
-window.checkBooleanAndConvert = checkBooleanAndConvert;
-window.filterApiArray = filterApiArray;
-window.setFilter = setFilter;
-window.clearFilters = clearFilters;
-window.reloadApp = reloadApp;
-window.setRandom = setRandom;
-window.getFilterValues = getFilterValues;
-renderApp();
+renderApp(App, document.getElementById('app-root'));
 loadAndPrepareData();

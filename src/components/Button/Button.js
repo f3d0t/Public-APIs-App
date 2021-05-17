@@ -1,20 +1,20 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework/element';
+import { createElement } from '../../framework/element';
 import styles from './Button.css';
 
-export function Button({ text = '', callbackFunction }) {
+export function Button({ text = '', callbackFunction = null }) {
   return (
     <button
       type="button"
       id={text.replace(/\s/g, '')}
       class={styles.menu_button}
       onclick={e => {
-        window.dataStore.activeInputId = text.replace(/\s/g, '');
+        window.dataStore.activeInputId = e.target.id;
         callbackFunction();
       }}
     >
-      ${text}
+      {text}
     </button>
   );
 }
