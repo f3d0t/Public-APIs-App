@@ -1,5 +1,4 @@
 import { renderApp } from './framework/render.js';
-import { fetchData } from './data/fetchData.js';
 import { dataStore } from './data/dataStore';
 import { App } from './components/App/App';
 
