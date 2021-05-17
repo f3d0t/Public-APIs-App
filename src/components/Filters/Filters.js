@@ -10,7 +10,7 @@ export function Filters() {
   return (
     <>
       {Object.entries(filters).map(([key, currentValue]) => (
-        <div class={styles.menu_filter}>
+        <div>
           <label for={key + '_select'}>{key}:</label>
           <select
             name={key}
