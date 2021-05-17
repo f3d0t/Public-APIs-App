@@ -4,8 +4,8 @@ import { createElement } from '../../framework/element';
 
 import { Filters } from '../Filters/Filters';
 import { Button } from '../Button/Button';
-import styles from './Menu.css';
 import { clearFilters, reloadApp, setRandom } from '../../data/prepareData';
+import styles from './Menu.css';
 
 export function Menu() {
   return (
