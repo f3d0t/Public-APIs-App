@@ -11,5 +11,5 @@ export function renderApp(componentFunction = null, targetElement = null) {
   Target.innerHTML = '';
   Target.appendChild(<Component />);
   if (activeInputId !== undefined && document.getElementById(ActiveInputId) !== null)
-    document.getElementById(activeInputId).focus();
+    document.getElementById(ActiveInputId).focus();
 }
