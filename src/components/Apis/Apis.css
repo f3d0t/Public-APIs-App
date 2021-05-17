@@ -17,3 +17,15 @@
   padding: 0px 28px 8px;
   flex-basis: 100%;
 }
+
+@media screen and (max-width: 560px) {
+  .apis_counter {
+    padding: 8px 12px 0px;
+  }
+  .apis_category {
+    padding: 8px 0px 0px;
+  }
+  .apis_category__name {
+    padding: 8px 12px 0px;
+  }
+}

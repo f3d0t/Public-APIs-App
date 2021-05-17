@@ -96,3 +96,9 @@
     flex-basis: calc(100% / 2 - 24px);
   }
 }
+
+@media screen and (max-width: 560px) {
+  .api {
+    flex-basis: calc(100% / 1 - 24px);
+  }
+}

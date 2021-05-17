@@ -14,3 +14,13 @@
   font-family: 'Source Code Pro', monospace;
   user-select: none;
 }
+
+@media screen and (max-width: 560px) {
+  .header {
+    height: 32px;
+    padding: 0 12px;
+  }
+  .header__title {
+    font-size: 1.2em;
+  }
+}

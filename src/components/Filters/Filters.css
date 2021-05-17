@@ -4,3 +4,10 @@
 .filter_select {
   font-family: 'Source Code Pro', monospace;
 }
+
+@media screen and (max-width: 560px) {
+  .menu_filter {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}

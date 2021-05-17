@@ -11,3 +11,10 @@
 .menu_button:focus {
   text-decoration: dashed underline 1px;
 }
+
+@media screen and (max-width: 560px) {
+  .menu_button {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}
