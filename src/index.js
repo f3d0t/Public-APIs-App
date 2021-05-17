@@ -3,16 +3,7 @@ import { fetchData } from './data/fetchData.js';
 import { dataStore } from './data/dataStore';
 import { App } from './components/App/App';
 
-import {
-  loadAndPrepareData,
-  checkBooleanAndConvert,
-  filterApiArray,
-  setFilter,
-  clearFilters,
-  reloadApp,
-  setRandom,
-  getFilterValues,
-} from './data/prepareData.js';
+import { loadAndPrepareData } from './data/prepareData.js';
 
 if (module.hot) {
   module.hot.accept();

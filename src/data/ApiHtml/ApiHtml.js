@@ -1,8 +1,8 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework/element';
+import { createElement } from '../../framework/element';
 
-import { icons } from '../../icons';
+import { icons } from '../icons';
 import styles from './ApiHtml.css';
 
 export function ApiHtml({ API, Auth, Cors, Description, HTTPS, Link }) {
@@ -29,7 +29,7 @@ export function ApiHtml({ API, Auth, Cors, Description, HTTPS, Link }) {
         </span>
         <span title={'CORS: ' + Cors}>CORS: {Cors === 'unknown' ? '??' : Cors}</span>
       </div>
-      <p class={styles.api__description}>${Description}</p>
+      <p class={styles.api__description}>{Description}</p>
     </a>
   );
 }
