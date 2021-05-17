@@ -1,6 +1,6 @@
 .menu {
   min-height: 64px;
-  padding: 0 0 0 56px;
+  padding: 8px 56px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -15,7 +15,7 @@
 @media screen and (max-width: 560px) {
   .menu {
     min-height: 64px;
-    padding: 12px 0 12px 12px;
+    padding: 8px 12px;
     flex-direction: column;
     align-items: flex-start;
   }
