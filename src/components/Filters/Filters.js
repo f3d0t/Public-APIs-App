@@ -1,6 +1,6 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { setFilter } from '../../data/prepareData';
+import { setFilter } from '../../data/filterData';
 import { createElement, createFragment } from '../../framework/element';
 
 import styles from './Filters.css';

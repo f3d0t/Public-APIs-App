@@ -12,8 +12,6 @@ export function Content() {
     );
   else if (window.dataStore.isDataLoading)
     return <p class={styles.loading_text}>Data is loading</p>;
-  else if (window.dataStore.currentApiArray.length === 0)
-    return <p class={styles.loading_text}>Nothing found 🕵️</p>;
 
   return <Apis />;
 }

@@ -1,7 +1,5 @@
 export const dataStore = {
   fullApiArray: [],
-  currentApiArray: [],
-  apiCount: '',
   filterArrays: {
     Category: [],
     HTTPS: [],
@@ -16,6 +14,7 @@ export const dataStore = {
   },
   activeInputId: '',
   error: null,
+  displayRandom: false,
   displayFavorites: false,
   isDataLoading: false,
 };

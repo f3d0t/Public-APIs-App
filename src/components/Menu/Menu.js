@@ -4,7 +4,7 @@ import { createElement } from '../../framework/element';
 
 import { Filters } from '../Filters/Filters';
 import { Button } from '../Button/Button';
-import { clearFilters, reloadApp, setRandom } from '../../data/prepareData';
+import { clearFilters, reloadApp, setRandom } from '../../data/filterData';
 import styles from './Menu.css';
 
 export function Menu() {
