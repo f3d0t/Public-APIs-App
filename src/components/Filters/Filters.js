@@ -1,22 +1,20 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { setFilter } from '../../data/filterData';
 import { createElement, createFragment } from '../../framework/element';
 
 import styles from './Filters.css';
 
-export function Filters() {
-  const { filterArrays, filters } = window.dataStore;
+export function Filters({ filterArrays, currentFilters, callbackFunction }) {
   return (
     <>
-      {Object.entries(filters).map(([key, currentValue]) => (
+      {Object.entries(currentFilters).map(([key, currentValue]) => (
         <div>
           <label for={key + '_select'}>{key}:</label>
           <select
             name={key}
             id={key + '_select'}
             class={styles.filter_select}
-            onchange={e => setFilter(key, e.target.value, key + '_select')}
+            onchange={e => callbackFunction(key, e.target.value, key + '_select')}
           >
             <option value="All">All</option>
             {filterArrays[key].map(value => {

@@ -2,14 +2,14 @@ import { checkBooleanAndConvert } from './utils';
 import { renderApp } from '../framework/render';
 import { loadAndPrepareData } from './prepareData';
 
-export function setFilter(key, value, id) {
+export function setFilter(key, value, activeInputId) {
   if (value === 'All' || value === '') {
     window.dataStore.filters[key] = '';
   } else {
     window.dataStore.filters[key] = checkBooleanAndConvert(value);
   }
   window.dataStore.displayRandom = false;
-  window.dataStore.activeInputId = id;
+  window.dataStore.activeInputId = activeInputId;
   renderApp();
 }
 
