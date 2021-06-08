@@ -1,7 +1,7 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment, useState, useEffect } from '../../framework';
-import { fetchData, getFilterValues } from '../../data';
+import { fetchData, getUniqueValuesArray } from '../../data';
 import { ApiHtml } from '../ApiHtml/ApiHtml';
 
 import { Header } from '../Header/Header';
@@ -34,7 +34,7 @@ export function App() {
           setApiArray(apis);
           const filterArrays = {};
           Object.keys(filters).map(key => {
-            filterArrays[key] = getFilterValues(apis, key);
+            filterArrays[key] = getUniqueValuesArray(apis, key);
           });
           setFilterArrays(filterArrays);
         })
