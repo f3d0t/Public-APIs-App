@@ -5,13 +5,17 @@ import { filterApiArray } from '../../data';
 
 import styles from './Apis.css';
 
-export function Apis({ apiArray, filterArrays, filters, displayRandom }) {
+export function Apis({
+  apiArray,
+  filterArrays: { Category: fullCategoryList },
+  filters,
+  displayRandom,
+}) {
   const currentCategory = filters.Category;
   const currentCategoryList = [];
   if (currentCategory !== '') {
     currentCategoryList.splice(0, 0, currentCategory);
   } else {
-    const fullCategoryList = filterArrays.Category;
     currentCategoryList.splice(0, 0, ...fullCategoryList);
   }
   const currentApiArray = filterApiArray(apiArray, filters, displayRandom);
