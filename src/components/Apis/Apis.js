@@ -1,25 +1,20 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework/element';
-import { filterApiArray } from '../../data/filterData';
+import { createElement, createFragment } from '../../framework';
+import { filterApiArray } from '../../data';
 
 import styles from './Apis.css';
 
-export function Apis() {
-  const {
-    filterArrays: { Category },
-    fullApiArray,
-    filters: { Category: currentCategory },
-    filters,
-    displayRandom,
-  } = window.dataStore;
+export function Apis({ apiArray, filterArrays, filters, displayRandom }) {
+  const currentCategory = filters.Category;
   const currentCategoryList = [];
   if (currentCategory !== '') {
     currentCategoryList.splice(0, 0, currentCategory);
   } else {
-    currentCategoryList.splice(0, 0, ...Category);
+    const fullCategoryList = filterArrays.Category;
+    currentCategoryList.splice(0, 0, ...fullCategoryList);
   }
-  const currentApiArray = filterApiArray(fullApiArray, filters, displayRandom);
+  const currentApiArray = filterApiArray(apiArray, filters, displayRandom);
   if (currentApiArray.length === 0)
     return (
       <p class={styles.message}>
@@ -29,7 +24,7 @@ export function Apis() {
   return (
     <>
       <span class={styles.apis_counter}>
-        Showing {currentApiArray.length} of {fullApiArray.length} APIs
+        Showing {currentApiArray.length} of {apiArray.length} APIs
       </span>
       {currentCategoryList.map(category => {
         const apisByCategory = currentApiArray.filter(api => api.Category === category);

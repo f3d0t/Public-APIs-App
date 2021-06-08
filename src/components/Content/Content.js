@@ -1,17 +1,21 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement } from '../../framework/element';
+import { createElement } from '../../framework';
 
 import { Apis } from '../Apis/Apis';
 import styles from './Content.css';
 
-export function Content() {
-  if (window.dataStore.error !== null)
-    return (
-      <p class={styles.loading_text + ' ' + styles.loading_text__error}>{window.dataStore.error}</p>
-    );
-  else if (window.dataStore.isDataLoading)
-    return <p class={styles.loading_text}>Data is loading</p>;
+export function Content({ error, isDataLoading, apiArray, filterArrays, filters, displayRandom }) {
+  if (error !== null)
+    return <p class={styles.loading_text + ' ' + styles.loading_text__error}>{error}</p>;
+  else if (isDataLoading) return <p class={styles.loading_text}>Data is loading</p>;
 
-  return <Apis />;
+  return (
+    <Apis
+      apiArray={apiArray}
+      filterArrays={filterArrays}
+      filters={filters}
+      displayRandom={displayRandom}
+    />
+  );
 }

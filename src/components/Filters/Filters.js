@@ -1,6 +1,6 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework/element';
+import { createElement, createFragment } from '../../framework';
 
 import styles from './Filters.css';
 
@@ -14,10 +14,10 @@ export function Filters({ filterArrays, currentFilters, callbackFunction }) {
             name={key}
             id={key + '_select'}
             class={styles.filter_select}
-            onchange={e => callbackFunction(key, e.target.value, key + '_select')}
+            onchange={e => callbackFunction(key, e.target.value)}
           >
             <option value="All">All</option>
-            {filterArrays[key].map(value => {
+            {filterArrays[key]?.map(value => {
               return (
                 <option value={value} {...(value === currentValue ? { selected: '' } : {})}>
                   {value}

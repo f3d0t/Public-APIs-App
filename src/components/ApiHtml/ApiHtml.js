@@ -1,8 +1,8 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement } from '../../framework/element';
+import { createElement } from '../../framework';
 
-import { icons } from '../icons';
+import { icons } from '../../data';
 import styles from './ApiHtml.css';
 
 export function ApiHtml({ API, Auth, Cors, Description, HTTPS, Link }) {

@@ -1,6 +1,5 @@
 import { checkBooleanAndConvert } from './utils';
 import { renderApp } from '../framework/render';
-import { loadAndPrepareData } from './prepareData';
 
 export function setFilter(key, value, activeInputId) {
   if (value === 'All' || value === '') {
@@ -29,7 +28,6 @@ export function clearFilters(render = true) {
 
 export function reloadApp() {
   clearFilters(false);
-  loadAndPrepareData();
 }
 
 export function filterApiArray(apiArray, filters, random) {

@@ -1,15 +1,27 @@
 /** @jsx createElement */
-/** @jsxFrag createFragment */
+/*** @jsxFrag createFragment */
 import { createElement } from './element';
-let Component, Target, ActiveInputId;
+import { current } from './hooks';
 
-export function renderApp(componentFunction = null, targetElement = null) {
-  const { activeInputId } = window.dataStore;
-  if (componentFunction) Component = componentFunction;
-  if (activeInputId) ActiveInputId = activeInputId;
-  if (targetElement) Target = targetElement;
-  Target.innerHTML = '';
-  Target.appendChild(<Component />);
-  if (activeInputId !== undefined && document.getElementById(ActiveInputId) !== null)
-    document.getElementById(ActiveInputId).focus();
+/**
+ * Renders a component and attaches it to the target DOM element
+ * @param Component - function
+ * @param target - DOM element to attach component to
+ */
+
+let timer;
+
+export function render(Component, target) {
+  function workLoop() {
+    if (current.shouldReRender) {
+      current.shouldReRender = false;
+      target.replaceChildren(<Component />);
+    }
+
+    cancelAnimationFrame(timer);
+    timer = requestAnimationFrame(workLoop);
+  }
+  timer = requestAnimationFrame(workLoop);
 }
+
+export default render;
