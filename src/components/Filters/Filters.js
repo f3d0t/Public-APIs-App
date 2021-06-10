@@ -9,15 +9,15 @@ export function Filters({ filterArrays, currentFilters, callbackFunction }) {
     <>
       {Object.entries(currentFilters).map(([key, currentValue]) => (
         <div>
-          <label for={key + '_select'}>{key}:</label>
+          <label For={key + '_select'}>{key}:</label>
           <select
             name={key}
             id={key + '_select'}
-            class={styles.filter_select}
-            onchange={e => callbackFunction(key, e.target.value)}
+            className={styles.filter_select}
+            onChange={e => callbackFunction(key, e.target.value)}
           >
             <option value="All">All</option>
-            {filterArrays[key]?.map(value => {
+            {filterArrays[key].map(value => {
               return (
                 <option value={value} {...(value === currentValue ? { selected: '' } : {})}>
                   {value}
