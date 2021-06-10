@@ -10,7 +10,6 @@ export function Button({ text = '', callbackFunction = null }) {
       id={text.replace(/\s/g, '')}
       class={styles.menu_button}
       onclick={e => {
-        //window.dataStore.activeInputId = e.target.id;
         callbackFunction(true);
       }}
     >
