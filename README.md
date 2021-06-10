@@ -2,6 +2,8 @@
 
 ### This application allows you to view list of public APIs, filter and search through them using [Public API for Public APIs](https://github.com/davemachado/public-api).
 
+### [Demo](https://f3d0t.github.io/public-apis-app/)
+
 ## Features
 
 1. List all APIs divided into sections by categories
