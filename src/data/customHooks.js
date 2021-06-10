@@ -9,32 +9,42 @@ export function useApis() {
   const [apiArray, setApiArray] = useState([]);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [displayRandom, setDisplayRandom] = useState(false);
+  const [refresh, setRefresh] = useState(0);
 
   useEffect(() => {
-    if (isDataLoading) {
-      fetchData()
-        .then(data => {
-          const { message, code } = data;
+    loadData();
+  }, [refresh]);
 
-          if (code !== '200' && message) throw Error(message);
+  function reloadData() {
+    setRefresh(refresh => refresh + 1);
+    setIsDataLoading(true);
+  }
 
-          setError(null);
-          const apis = data.entries.map(api => {
-            if (api.Auth === '') api.Auth = 'none';
-            api.HTML = ApiHtml(api);
-            return api;
-          });
-          setApiArray(apis);
-          const filterArrays = {};
-          Object.keys(filters).map(key => {
-            filterArrays[key] = getUniqueValuesArray(apis, key);
-          });
-          setFilterArrays(filterArrays);
-        })
-        .catch(setError)
-        .finally(() => setIsDataLoading(false));
-    }
-  }, [isDataLoading]);
+  function loadData() {
+    fetchData()
+      .then(data => {
+        const { message, code } = data;
+
+        if (code !== '200' && message) throw Error(message);
+
+        setError(null);
+        const apis = data.entries.map(api => {
+          if (api.Auth === '') api.Auth = 'none';
+          api.HTML = ApiHtml(api);
+          return api;
+        });
+        setApiArray(apis);
+        const filterArrays = {};
+        Object.keys(filters).map(key => {
+          filterArrays[key] = getUniqueValuesArray(apis, key);
+        });
+        setFilterArrays(filterArrays);
+      })
+      .catch(setError)
+      .finally(() => {
+        setIsDataLoading(false);
+      });
+  }
 
   return {
     error,
@@ -49,5 +59,6 @@ export function useApis() {
     setIsDataLoading,
     displayRandom,
     setDisplayRandom,
+    reloadData,
   };
 }

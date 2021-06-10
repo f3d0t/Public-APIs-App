@@ -16,11 +16,10 @@ export function App() {
     setFilters,
     apiArray,
     isDataLoading,
-    setIsDataLoading,
     displayRandom,
     setDisplayRandom,
+    reloadData,
   } = useApis();
-
   return (
     <>
       <Header />
@@ -29,7 +28,7 @@ export function App() {
         filters={filters}
         setFilters={setFilters}
         setDisplayRandom={setDisplayRandom}
-        setReload={setIsDataLoading}
+        setReload={reloadData}
       />
       <Content
         error={error}
