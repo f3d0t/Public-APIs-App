@@ -2,6 +2,7 @@
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../../framework';
 import { useApis } from '../../data';
+import { ApiContext } from '../../context';
 
 import { Header } from '../Header/Header';
 import { Menu } from '../Menu/Menu';
@@ -20,6 +21,7 @@ export function App() {
     setDisplayRandom,
     reloadData,
   } = useApis();
+  console.log(apiArray);
   return (
     <>
       <Header />
@@ -30,14 +32,16 @@ export function App() {
         setDisplayRandom={setDisplayRandom}
         setReload={reloadData}
       />
-      <Content
-        error={error}
-        isDataLoading={isDataLoading}
-        apiArray={apiArray}
-        filterArrays={filterArrays}
-        filters={filters}
-        displayRandom={displayRandom}
-      />
+      <ApiContext.Provider value={apiArray}>
+        <Content
+          error={error}
+          isDataLoading={isDataLoading}
+          apiArray={apiArray}
+          filterArrays={filterArrays}
+          filters={filters}
+          displayRandom={displayRandom}
+        />
+      </ApiContext.Provider>
     </>
   );
 }

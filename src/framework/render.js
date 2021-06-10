@@ -16,6 +16,7 @@ export function render(Component, target) {
     if (current.shouldReRender) {
       current.shouldReRender = false;
       target.replaceChildren(<Component />);
+      console.log('r');
     }
 
     cancelAnimationFrame(timer);

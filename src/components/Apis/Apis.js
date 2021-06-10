@@ -2,15 +2,11 @@
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../../framework';
 import { filterApiArray } from '../../data';
+import { useApiContext } from '../../context';
 
 import styles from './Apis.css';
 
-export function Apis({
-  apiArray,
-  filterArrays: { Category: fullCategoryList },
-  filters,
-  displayRandom,
-}) {
+export function Apis({ filterArrays: { Category: fullCategoryList }, filters, displayRandom, apiArray }) {
   const currentCategory = filters.Category;
   const currentCategoryList = [];
   if (currentCategory !== '') {
