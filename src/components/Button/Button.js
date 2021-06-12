@@ -1,6 +1,5 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement } from '../../framework';
+import React from 'react';
+
 import styles from './Button.css';
 
 export function Button({ text = '', callbackFunction = null }) {
@@ -8,8 +7,8 @@ export function Button({ text = '', callbackFunction = null }) {
     <button
       type="button"
       id={text.replace(/\s/g, '')}
-      class={styles.menu_button}
-      onclick={e => {
+      className={styles.menu_button}
+      onClick={e => {
         callbackFunction(true);
       }}
     >

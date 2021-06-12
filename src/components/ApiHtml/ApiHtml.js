@@ -1,35 +1,33 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement } from '../../framework';
+import React from 'react';
 
 import { icons } from '../../data';
 import styles from './ApiHtml.css';
 
-export function ApiHtml({ API, Auth, Cors, Description, HTTPS, Link }) {
+export function ApiHtml({ API, Auth, Cors, Description, HTTPS, Link }, key) {
   return (
-    <a href={Link} target="_blank" class={styles.api}>
-      <h3 class={styles.api__name}>{API}</h3>
-      <div class={styles.heart_container}>
-        <div class={styles.heart + ' ' + styles.heart__l}></div>
-        <div class={styles.heart + ' ' + styles.heart__r}></div>
+    <a key={key} href={Link} target="_blank" className={styles.api}>
+      <h3 className={styles.api__name}>{API}</h3>
+      <div className={styles.heart_container}>
+        <div className={styles.heart + ' ' + styles.heart__l}></div>
+        <div className={styles.heart + ' ' + styles.heart__r}></div>
       </div>
-      <div class={styles.api__features}>
+      <div className={styles.api__features}>
         <img
           src={icons.auth[Auth]}
-          class={styles.api__auth_icon}
+          className={styles.api__auth_icon}
           title={'auth: ' + Auth}
           alt={'auth: ' + Auth}
         ></img>
         <span
           title={'HTTPS: ' + HTTPS}
           data-https={HTTPS ? 'true' : 'false'}
-          class={styles.api__https}
+          className={styles.api__https}
         >
           {HTTPS ? 'HTTPS://' : 'HTTP://'}
         </span>
         <span title={'CORS: ' + Cors}>CORS: {Cors === 'unknown' ? '??' : Cors}</span>
       </div>
-      <p class={styles.api__description}>{Description}</p>
+      <p className={styles.api__description}>{Description}</p>
     </a>
   );
 }

@@ -1,6 +1,5 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework';
+import React from 'react';
+
 import { useApis } from '../../data';
 
 import { Header } from '../Header/Header';
@@ -27,8 +26,9 @@ export function App() {
         filterArrays={filterArrays}
         filters={filters}
         setFilters={setFilters}
+        displayRandom={displayRandom}
         setDisplayRandom={setDisplayRandom}
-        setReload={reloadData}
+        reloadData={reloadData}
       />
       <Content
         error={error}

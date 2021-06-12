@@ -1,6 +1,5 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework';
+import React from 'react';
+
 import { filterApiArray } from '../../data';
 
 import styles from './Apis.css';
@@ -21,13 +20,13 @@ export function Apis({
   const currentApiArray = filterApiArray(apiArray, filters, displayRandom);
   if (currentApiArray.length === 0)
     return (
-      <p class={styles.message}>
-        Nothing found <span class={styles.message__icon}>🕵️</span>
+      <p className={styles.message}>
+        Nothing found <span className={styles.message__icon}>🕵️</span>
       </p>
     );
   return (
     <>
-      <span class={styles.apis_counter}>
+      <span className={styles.apis_counter}>
         Showing {currentApiArray.length} of {apiArray.length} APIs
       </span>
       {currentCategoryList.map(category => {
@@ -35,8 +34,8 @@ export function Apis({
         if (apisByCategory.length === 0) return null;
         else
           return (
-            <div class={styles.apis_category}>
-              <h2 class={styles.apis_category__name}>{category}</h2>
+            <div key={category} className={styles.apis_category}>
+              <h2 className={styles.apis_category__name}>{category}</h2>
               {apisByCategory.map(api => api.HTML)}
             </div>
           );

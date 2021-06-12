@@ -1,4 +1,4 @@
-import { useState, useEffect } from '../framework';
+import { useState, useEffect } from 'react';
 import { fetchData, getUniqueValuesArray } from './';
 import { ApiHtml } from '../components/ApiHtml/ApiHtml';
 
@@ -28,9 +28,9 @@ export function useApis() {
         if (code !== '200' && message) throw Error(message);
 
         setError(null);
-        const apis = data.entries.map(api => {
+        const apis = data.entries.map((api, id) => {
           if (api.Auth === '') api.Auth = 'none';
-          api.HTML = ApiHtml(api);
+          api.HTML = ApiHtml(api, id);
           return api;
         });
         setApiArray(apis);
