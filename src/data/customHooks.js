@@ -13,13 +13,13 @@ export function useApis() {
 
   useEffect(() => {
     loadData();
-    console.log('ue');
+    console.log('useEffect call');
   }, [refresh]);
 
   function reloadData() {
-    setRefresh(refresh => refresh + 1);
     setIsDataLoading(true);
-    console.log('ref');
+    setRefresh(refresh => refresh + 1);
+    console.log('reloadData call');
   }
 
   function loadData() {
@@ -45,7 +45,7 @@ export function useApis() {
       .catch(setError)
       .finally(() => {
         setIsDataLoading(false);
-        console.log('ss');
+        console.log('.finally in fetch');
       });
   }
 
