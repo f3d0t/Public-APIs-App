@@ -1,0 +1,12 @@
+.menu_button {
+  background: #fff;
+  color: #202124;
+  font-family: 'Source Code Pro', monospace;
+}
+.menu_button:hover {
+  text-decoration: dashed underline 1px;
+  cursor: pointer;
+}
+.menu_button:focus {
+  text-decoration: dashed underline 1px;
+}

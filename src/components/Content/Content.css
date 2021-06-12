@@ -1,0 +1,10 @@
+.loading_text {
+  text-align: center;
+  padding-top: 14px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+}
+
+.loading_text__error {
+  color: #ca2f2f;
+}

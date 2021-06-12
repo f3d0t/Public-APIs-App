@@ -1,0 +1,26 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  height: 64px;
+  border-bottom: 1px solid #dadce0;
+  padding: 0 56px;
+  color: #202124;
+}
+.header__title {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Source Code Pro', monospace;
+  user-select: none;
+}
+
+@media screen and (max-width: 560px) {
+  .header {
+    height: 32px;
+    padding: 0 12px;
+  }
+  .header__title {
+    font-size: 1.2em;
+  }
+}
