@@ -1,15 +1,14 @@
 import React from 'react';
-
+import { useFiltersContext } from '../../context';
 import { filterApiArray } from '../../data';
 
 import styles from './Apis.css';
 
-export function Apis({
-  apiArray,
-  filterArrays: { Category: fullCategoryList },
-  filters,
-  displayRandom,
-}) {
+export function Apis({ apiArray, displayRandom }) {
+  const {
+    filters,
+    filterArrays: { Category: fullCategoryList },
+  } = useFiltersContext();
   const currentCategory = filters.Category;
   const currentCategoryList = [];
   if (currentCategory !== '') {

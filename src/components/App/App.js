@@ -1,10 +1,11 @@
 import React from 'react';
-
+import { FiltersContext } from '../../context';
 import { useApis } from '../../data';
 
 import { Header } from '../Header/Header';
 import { Menu } from '../Menu/Menu';
 import { Content } from '../Content/Content';
+
 import { styles } from './App.css';
 
 export function App() {
@@ -22,22 +23,20 @@ export function App() {
   return (
     <>
       <Header />
-      <Menu
-        filterArrays={filterArrays}
-        filters={filters}
-        setFilters={setFilters}
-        displayRandom={displayRandom}
-        setDisplayRandom={setDisplayRandom}
-        reloadData={reloadData}
-      />
-      <Content
-        error={error}
-        isDataLoading={isDataLoading}
-        apiArray={apiArray}
-        filterArrays={filterArrays}
-        filters={filters}
-        displayRandom={displayRandom}
-      />
+      <FiltersContext.Provider value={{ filters, filterArrays }}>
+        <Menu
+          setFilters={setFilters}
+          displayRandom={displayRandom}
+          setDisplayRandom={setDisplayRandom}
+          reloadData={reloadData}
+        />
+        <Content
+          error={error}
+          isDataLoading={isDataLoading}
+          apiArray={apiArray}
+          displayRandom={displayRandom}
+        />
+      </FiltersContext.Provider>
     </>
   );
 }

@@ -1,8 +1,10 @@
 import React from 'react';
+import { useFiltersContext } from '../../context';
 
 import styles from './Filters.css';
 
-export function Filters({ filterArrays, currentFilters, callbackFunction }) {
+export function Filters({ callbackFunction }) {
+  const { filters: currentFilters, filterArrays } = useFiltersContext();
   return (
     <>
       {Object.entries(currentFilters).map(([key, currentValue]) => (

@@ -1,18 +1,14 @@
 import React from 'react';
-
+import { useFiltersContext } from '../../context';
 import { checkBooleanAndConvert } from '../../data';
+
 import { Filters } from '../Filters/Filters';
 import { Button } from '../Button/Button';
+
 import styles from './Menu.css';
 
-export function Menu({
-  filterArrays,
-  filters,
-  setFilters,
-  displayRandom,
-  setDisplayRandom,
-  reloadData,
-}) {
+export function Menu({ setFilters, displayRandom, setDisplayRandom, reloadData }) {
+  const { filters } = useFiltersContext();
   const clearFilters = () => {
     const emptyFilters = {};
     Object.keys(filters).map(key => {
@@ -36,7 +32,7 @@ export function Menu({
   };
   return (
     <div className={styles.menu}>
-      <Filters filterArrays={filterArrays} currentFilters={filters} callbackFunction={setFilter} />
+      <Filters callbackFunction={setFilter} />
       <Button text="Get random" callbackFunction={displayRandomTrigger} />
       <Button text="Clear filters" callbackFunction={clearFilters} />
       <Button text="Reload data" callbackFunction={reloadData} />
