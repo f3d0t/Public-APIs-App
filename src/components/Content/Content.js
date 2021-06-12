@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Apis } from '../Apis/Apis';
+
 import styles from './Content.css';
 
 export function Content({ error, isDataLoading, apiArray, displayRandom }) {

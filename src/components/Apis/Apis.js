@@ -8,6 +8,7 @@ export function Apis({ apiArray, displayRandom }) {
   const {
     filters,
     filterArrays: { Category: fullCategoryList },
+    search,
   } = useFiltersContext();
   const currentCategory = filters.Category;
   const currentCategoryList = [];
@@ -16,7 +17,7 @@ export function Apis({ apiArray, displayRandom }) {
   } else {
     currentCategoryList.splice(0, 0, ...fullCategoryList);
   }
-  const currentApiArray = filterApiArray(apiArray, filters, displayRandom);
+  const currentApiArray = filterApiArray(apiArray, filters, displayRandom, search);
   if (currentApiArray.length === 0)
     return (
       <p className={styles.message}>

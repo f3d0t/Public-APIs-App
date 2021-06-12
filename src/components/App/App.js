@@ -18,17 +18,20 @@ export function App() {
     isDataLoading,
     displayRandom,
     setDisplayRandom,
+    search,
+    setSearch,
     reloadData,
   } = useApis();
   return (
     <>
       <Header />
-      <FiltersContext.Provider value={{ filters, filterArrays }}>
+      <FiltersContext.Provider value={{ filters, filterArrays, search }}>
         <Menu
           setFilters={setFilters}
           displayRandom={displayRandom}
           setDisplayRandom={setDisplayRandom}
           reloadData={reloadData}
+          setSearch={setSearch}
         />
         <Content
           error={error}
